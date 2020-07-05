@@ -1,23 +1,21 @@
-# Deploy Shynet on AWS + Cloudflare with docker-compose
+# Shynet on Lightsail + Cloudflare with `docker-compose`
 
-Run [Shynet](https://github.com/milesmcc/shynet) on AWS + Cloudflare paying just $3.50 per month.
-
-As far as I can tell, that is the cheapest way to run a privacy-conscious analytics on your personal website.
+Run [Shynet](https://github.com/milesmcc/shynet) on Amazon Lightsail and Cloudflare paying just $3.50 per month. As far as I can tell, that is the cheapest way to run a privacy-conscious analytics on your personal website.
 
 # Overview
 
 ### Basic Setup
-1. Have a subdomain available (or register a new one)
-2. Create an Amazon Lightsail instance running Ubuntu 18.04
-3. Install Shynet via `docker-compose`
-5. Setup Cloudflare as reverse proxy (with SSL/TLS)
-6. Use Shynet
+1. [Have a subdomain available (or register a new one)](#1-have-a-subdomain-available-or-register-a-new-one)
+2. [Create an Amazon Lightsail instance running Ubuntu 18.04](#2-create-an-amazon-lightsail-instance-running-ubuntu-1804)
+3. [Install Shynet via `docker-compose`](#3-install-shynet-via-docker-compose)
+4. [Setup Cloudflare as reverse proxy (with SSL/TLS)](#4-setup-cloudflare-as-reverse-proxy-with-ssltls)
+5. [Use Shynet](#5-use-shynet)
 
 Keep in mind that this guide is for the most basic setup possible. For a deep dive, please follow [Shynet's own installation guides](https://github.com/milesmcc/shynet/blob/master/GUIDE.md#installation).
 
 ### Maintenance
-- Upgrading Shynet
-- Cleaning up exited/unused containers and dangling images
+- [Upgrading Shynet](#upgrading-shynet)
+- [Cleaning up exited/unused containers and dangling images](#cleaning-up-exitedunused-containers-and-dangling-images)
 
 # Setup
 
@@ -90,7 +88,7 @@ sudo shutdown -r 0
 # you will be disconnected
 ```
 
-## 2. Install Shynet via `docker-compose`
+## 3. Install Shynet via `docker-compose`
 
 Start by setting the environment variables:
 
@@ -240,7 +238,7 @@ docker logs SHYNET_CONTAINER_ID --tail 20
 
 Copy and paste the `A_CONFIRMATION_URL` on your browser to verify your email.
 
-## 5. Setup Cloudflare as reverse proxy (with SSL/TLS)
+## 4. Setup Cloudflare as reverse proxy (with SSL/TLS)
 
 Cloudflare is an excellent service that includes CDN, attack/DDoS protection and SSL/TLS certificates for HTTPS. Simply put, your website will be faster and more secure. And you can have it all for free! 
 
@@ -262,17 +260,18 @@ Then tweak it to add `HTTPS`:
 
 Wait more 10-20 minutes and visit `shynet.MY_WEBSITE_URL.com` again. You should have been redirected to `HTTPS` automatically. Check it yourself by clicking on the lock in your browser address bar. There should be something like "Connection is secure/encrypted" and a certificate issued by Cloudflare.
 
-To strengthen the security of your Shynet dashboard, follow the instructions in the [Shynet's official guide](https://github.com/milesmcc/shynet/blob/master/GUIDE.md#cloudflare).
+To strengthen the security of your Shynet dashboard, follow the instructions in the [Shynet's own usage guide](https://github.com/milesmcc/shynet/blob/master/GUIDE.md#cloudflare).
 
 
-## 6. Use Shynet
+## 5. Use Shynet
 
 Login to `shynet.YOUR_WEBSITE.com`. Click on `+ New Service` and create a analytics service for `YOUR_WEBSITE.com`. 
 
-Finally, install your tracking script. Place the following snippet at the end of the `<body>` tag on any `html` page you'd like to track:
+Finally, install your tracking script. Place the following snippet at the end of the `<body>` tag on any `html` page you'd like to track:
 
 ```html
-<noscript><img src="https://shynet.YOUR_WEBSITE.com/ingress/XXXXXXXXXXXXX/pixel.gif"></noscript><script src="https://shynet.YOUR_WEBSITE.com/ingress/XXXXXXXXXXXXX/script.js"></script>
+<noscript><img src="https://shynet.YOUR_WEBSITE.com/ingress/XXXXXXXXXXXXX/pixel.gif"></noscript>
+<script src="https://shynet.YOUR_WEBSITE.com/ingress/XXXXXXXXXXXXX/script.js"></script>
 ```
 
 Add the tracking script to your code, deploy it and visit `MY_WEBSITE_URL.com`. Your hit should appear at `shynet.MY_WEBSITE_URL.com` a few moments later.
@@ -282,7 +281,7 @@ Add the tracking script to your code, deploy it and visit `MY_WEBSITE_URL.com`. 
 
 ## Upgrading Shynet
 
-Whenever there is a new version of Shynet, you should be able (most of the time) to update it with:
+Whenever there is a [new version](https://github.com/milesmcc/shynet/releases) of Shynet released on [docker hub](https://hub.docker.com/r/milesmcc/shynet), you should be able to update it (most of the time) with:
 
 ```sh
 # login to your virtual server
