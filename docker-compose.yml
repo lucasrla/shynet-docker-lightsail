@@ -1,3 +1,4 @@
+# based on
 # https://github.com/milesmcc/shynet/blob/5d26ab292b055c0516c4850f26d08bc3d870bd0c/docker-compose.yml
 
 version: '3'
@@ -6,11 +7,18 @@ services:
   shynet:
     image: milesmcc/shynet:latest
     restart: unless-stopped
+    # https://stackoverflow.com/questions/40801772/what-is-the-difference-between-docker-compose-ports-vs-expose
     expose:
       - 8080
+    # https://docs.docker.com/compose/compose-file/#ports      
+    # Note that port 8080 (container) is being published to the host at port 80 (http).
+    # We are doing this specifically for our simple http-only setup (no https).
+    # If your setup deals with SSL/TLS and/or nginx, you might want to delete this section 
+    # and configure it within nginx
+    ports:
+      - "80:8080"
     env_file:
-      # Create a file called '.env' if it doesn't already exist.
-      # You can use `TEMPLATE.env` as a guide.
+      # Create a file called '.env' if it doesn't already exist, use `TEMPLATE.env` as a guide.
       - .env
     environment:
       - DB_HOST=db
