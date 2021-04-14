@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
   db:
-    image: postgres
+    image: "postgres:12"
     restart: always
     environment:
       - "POSTGRES_USER=${DB_USER}"

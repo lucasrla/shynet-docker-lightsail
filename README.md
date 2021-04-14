@@ -2,6 +2,7 @@
 
 Run [Shynet](https://github.com/milesmcc/shynet) on Amazon Lightsail and Cloudflare paying just $3.50 per month. As far as I can tell, that is the cheapest way to run a privacy-conscious analytics on your personal website.
 
+
 # Overview
 
 ### Basic Setup
@@ -16,6 +17,7 @@ Keep in mind that this guide is for the most basic setup possible. For a deep di
 ### Maintenance
 - [Upgrading Shynet](#upgrading-shynet)
 - [Cleaning up exited/unused containers and dangling images](#cleaning-up-exitedunused-containers-and-dangling-images)
+
 
 # Setup
 
@@ -120,7 +122,7 @@ docker-compose config
         POSTGRES_DB: shynet_db
         POSTGRES_PASSWORD: # A_LONG_AND_RANDOM_PASSWORD
         POSTGRES_USER: shynet_db_user
-    image: postgres
+    image: postgres:12
     networks:
         internal: null
     restart: always
@@ -317,7 +319,7 @@ ssh -i ~/.ssh/LightsailDefaultKey-XX-XXXX-X.pem ubuntu@YOUR_INSTANCE_PUBLIC_IP_A
 
 # list all containers, including exited/unused ones
 docker container list -a
-# which the same as: docker ps -a
+# which is the same as: docker ps -a
 
 # remove exited/unused ones (by each id)
 docker rm CONTAINER_ID
@@ -329,6 +331,21 @@ docker container list -a
 # (i.e. images that are not used by any existing container)
 docker image prune
 ```
+
+## Troubleshooting docker issues
+
+```sh
+# login to your server
+ssh -i ~/.ssh/LightsailDefaultKey-XX-XXXX-X.pem ubuntu@YOUR_INSTANCE_PUBLIC_IP_ADDRESS
+
+# check what is running
+docker ps
+
+# if there is anything different from "Up ..." in the STATUS column of a container,
+# check the logs
+docker logs --tail 20 --follow --timestamps CONTAINER_ID
+```
+
 
 # Other References
 
